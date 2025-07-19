@@ -32,7 +32,7 @@ namespace MonoGame.Extended.Tiled.Renderers
         private IEnumerable<TiledMapLayerModel> CreateImageLayerModels(TiledMapImageLayer imageLayer)
         {
             var modelBuilder = new TiledMapStaticLayerModelBuilder();
-            modelBuilder.AddSprite(imageLayer.Image, imageLayer.Position, imageLayer.Image.Bounds, TiledMapTileFlipFlags.None);
+            modelBuilder.AddSprite(imageLayer.Image, new Vector3(imageLayer.Position, 0), imageLayer.Image.Bounds, TiledMapTileFlipFlags.None);
             yield return modelBuilder.Build(_graphicsDevice, imageLayer.Image);
         }
 
@@ -42,10 +42,12 @@ namespace MonoGame.Extended.Tiled.Renderers
             var staticLayerBuilder = new TiledMapStaticLayerModelBuilder();
             var animatedLayerBuilder = new TiledMapAnimatedLayerModelBuilder();
 
+            Console.WriteLine(tileLayer.Name);
+
             foreach (var tileset in map.Tilesets)
             {
-				var firstGlobalIdentifier = map.GetTilesetFirstGlobalIdentifier(tileset);
-				var lastGlobalIdentifier = tileset.TileCount + firstGlobalIdentifier - 1;
+                var firstGlobalIdentifier = map.GetTilesetFirstGlobalIdentifier(tileset);
+                var lastGlobalIdentifier = tileset.TileCount + firstGlobalIdentifier - 1;
                 var texture = tileset.Texture;
 
                 foreach (var tile in tileLayer.Tiles.Where(t => firstGlobalIdentifier <= t.GlobalIdentifier && t.GlobalIdentifier <= lastGlobalIdentifier))
@@ -66,7 +68,7 @@ namespace MonoGame.Extended.Tiled.Renderers
 
                     if (tilesetTile is TiledMapTilesetAnimatedTile animatedTilesetTile)
                     {
-                        animatedLayerBuilder.AddSprite(texture, position, sourceRectangle, flipFlags);
+                        animatedLayerBuilder.AddSprite(texture, new Vector3(position, tileLayer.Name == "Interactable" ? 0.75f - (0.5f * (position.Y) / map.HeightInPixels) : 1), sourceRectangle, flipFlags);
                         animatedTilesetTile.CreateTextureRotations(tileset, flipFlags);
                         animatedLayerBuilder.AnimatedTilesetTiles.Add(animatedTilesetTile);
                         animatedLayerBuilder.AnimatedTilesetFlipFlags.Add(flipFlags);
@@ -76,7 +78,8 @@ namespace MonoGame.Extended.Tiled.Renderers
                     }
                     else
                     {
-                        staticLayerBuilder.AddSprite(texture, position, sourceRectangle, flipFlags);
+                        staticLayerBuilder.AddSprite(texture, new Vector3(position, tileLayer.Name == "Interactable" ? 0.75f - (0.5f * (position.Y) / map.HeightInPixels) : 1), sourceRectangle, flipFlags);
+                        Console.WriteLine(new Vector3(position, tileLayer.Name == "Interactable" ? 0.75f - (0.5f * (position.Y) / map.HeightInPixels) : 1));
 
                         if (staticLayerBuilder.IsFull)
                             layerModels.Add(staticLayerBuilder.Build(_graphicsDevice, texture));

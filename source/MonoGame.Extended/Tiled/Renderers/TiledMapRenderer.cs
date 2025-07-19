@@ -172,9 +172,9 @@ namespace MonoGame.Extended.Tiled.Renderers
 
                     // for each pass in our effect
                     foreach (var pass in effect1.CurrentTechnique.Passes)
-					{
-						// apply the pass, effectively choosing which vertex shader and fragment (pixel) shader to use
-						pass.Apply();
+                    {
+                        // apply the pass, effectively choosing which vertex shader and fragment (pixel) shader to use
+                        pass.Apply();
 
                         // draw the geometry from the vertex buffer / index buffer
                         _graphicsDevice.DrawIndexedPrimitives(PrimitiveType.TriangleList, 0, 0, layerModel.TriangleCount);

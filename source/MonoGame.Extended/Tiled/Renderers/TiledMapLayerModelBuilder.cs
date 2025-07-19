@@ -31,7 +31,7 @@ namespace MonoGame.Extended.Tiled.Renderers
             return model;
         }
 
-        public void AddSprite(Texture2D texture, Vector2 position, Rectangle sourceRectangle, TiledMapTileFlipFlags flipFlags)
+        public void AddSprite(Texture2D texture, Vector3 position, Rectangle sourceRectangle, TiledMapTileFlipFlags flipFlags)
         {
             Indices.AddRange(CreateTileIndices(Vertices.Count));
             Debug.Assert(Indices.Count <= TiledMapHelper.MaximumIndicesPerModel);
@@ -40,7 +40,7 @@ namespace MonoGame.Extended.Tiled.Renderers
             Debug.Assert(Vertices.Count <= TiledMapHelper.MaximumVerticesPerModel);
         }
 
-        private static IEnumerable<VertexPositionTexture> CreateVertices(Texture2D texture, Vector2 position, Rectangle sourceRectangle, TiledMapTileFlipFlags flags = TiledMapTileFlipFlags.None)
+        private static IEnumerable<VertexPositionTexture> CreateVertices(Texture2D texture, Vector3 position, Rectangle sourceRectangle, TiledMapTileFlipFlags flags = TiledMapTileFlipFlags.None)
         {
             var reciprocalWidth = 1f / texture.Width;
             var reciprocalHeight = 1f / texture.Height;
@@ -51,10 +51,10 @@ namespace MonoGame.Extended.Tiled.Renderers
 
             VertexPositionTexture vertexTopLeft, vertexTopRight, vertexBottomLeft, vertexBottomRight;
 
-            vertexTopLeft.Position = new Vector3(position, 0);
-            vertexTopRight.Position = new Vector3(position + new Vector2(sourceRectangle.Width, 0), 0);
-            vertexBottomLeft.Position = new Vector3(position + new Vector2(0, sourceRectangle.Height), 0);
-            vertexBottomRight.Position = new Vector3(position + new Vector2(sourceRectangle.Width, sourceRectangle.Height), 0);
+            vertexTopLeft.Position = position;
+            vertexTopRight.Position = position + new Vector3(sourceRectangle.Width, 0, 0);
+            vertexBottomLeft.Position = position + new Vector3(0, sourceRectangle.Height, 0);
+            vertexBottomRight.Position = position + new Vector3(sourceRectangle.Width, sourceRectangle.Height, 0);
 
             vertexTopLeft.TextureCoordinate.Y = texelTop;
             vertexTopLeft.TextureCoordinate.X = texelLeft;
