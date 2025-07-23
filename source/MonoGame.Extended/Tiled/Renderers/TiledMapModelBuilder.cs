@@ -145,7 +145,7 @@ namespace MonoGame.Extended.Tiled.Renderers
                 // GID of 0 means cell is empty, therefore there is a tile below: https://doc.mapeditor.org/en/stable/reference/global-tile-ids/#mapping-a-gid-to-a-local-tile-id
                 return InteractableTileDepthCheck(map, tileLayer, lowerTile);
             }
-            else return 0.75f - (0.5f * GetTilePosition(map, tile).Y / map.HeightInPixels);
+            else return Math.Clamp(0.75f - (0.5f * GetTilePosition(map, tile).Y / map.HeightInPixels), 0.25f, 0.75f);
         }
     }
 }
